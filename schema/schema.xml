@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="listeners">
+	<table name="table">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+		<column name="name" type="VARCHAR" size="64"/>
+		<behavior name="listener"/>
+	</table>
+	<table name="other_table">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+		<column name="checked" type="BOOLEAN" default="false"/>
+		<column name="other" type="INTEGER"/>
+	</table>
+</database>

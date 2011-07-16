@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Replace the __UPPER_CASE__ values according to your setup -->
+<config>
+  <propel>
+    <datasources default="__SOURCE_NAME__">
+      <datasource id="__SOURCE_NAME_FROM_ABOVE__">
+        <adapter>mysql</adapter> <!-- sqlite, mysql, myssql, oracle, or pgsql -->
+        <connection>
+          <dsn>mysql:host=__DATABASE_HOST__;dbname=__DATABASE_NAME__</dsn>
+          <user>__DATABASE_USER_NAME__</user>
+          <password>__DATABASE_PASSWORD__</password>
+        </connection>
+      </datasource>
+    </datasources>
+  </propel>
+</config>

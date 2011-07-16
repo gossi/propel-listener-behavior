@@ -1,0 +1,17 @@
+propel.project = propel
+
+propel.database = mysql
+propel.database.url = mysql://<user>@<host>/<database>
+propel.database.encoding = utf8
+
+propel.schema.autoPackage = false
+propel.schema.autoPrefix = false
+
+propel.mysql.tableType = InnoDB
+
+propel.output.dir = ${propel.project.dir}/../build
+propel.php.dir = ${propel.output.dir}
+propel.phpconf.dir = ${propel.output.dir}
+
+# point to the src/generator/ListenerBehavior using dots 
+propel.behavior.listener.class = 
