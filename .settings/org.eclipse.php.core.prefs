@@ -1,0 +1,5 @@
+#Fri Jul 15 22:15:26 CEST 2011
+eclipse.preferences.version=1
+include_path=0;/propel-listener-behavior/src\u00050;/propel-listener-behavior/build/propel\u00050;/propel-listener-behavior/lib/propel-1.6.1/generator/lib\u00050;/propel-listener-behavior/lib/propel-1.6.1/runtime/lib
+phpVersion=php5.3
+use_asp_tags_as_php=false
