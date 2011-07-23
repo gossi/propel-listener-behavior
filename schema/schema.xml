@@ -10,4 +10,9 @@
 		<column name="checked" type="BOOLEAN" default="false"/>
 		<column name="other" type="INTEGER"/>
 	</table>
+	<table name="multi_pk_table">
+		<column name="module" required="true" primaryKey="true" type="VARCHAR"/>
+		<column name="version" required="true" primaryKey="true" type="VARCHAR"/>
+		<column name="etc" type="VARCHAR"/>
+	</table>
 </database>

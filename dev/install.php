@@ -1,10 +1,9 @@
 <?php
 include 'bootstrap.php';
 
-$t = new Table();
-$t->addListener('genericCallback');
+Table::addGlobalListener('genericCallback');
 
-$t->addListener(array(
+Table::addGlobalListener(array(
 	'callback' => 'insertCallback',
 	'event' => 'postInsert'
 ));
@@ -14,17 +13,17 @@ $t->addListener(array(
 // 	'event' => 'postDelete'
 // ));
 
-$t->addListener(array(
+Table::addGlobalListener(array(
 	'callback' => 'updateCallback',
 	'event' => 'postUpdate'
 ));
 
-$t->addListener(array(
+Table::addGlobalListener(array(
 	'callback' => 'deleteCallback',
 	'event' => 'postDelete'
 ));
 
-$t->addListener(array(
+Table::addGlobalListener(array(
 	'on' => 'MyListener'
 ));
 

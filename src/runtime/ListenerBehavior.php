@@ -1,9 +1,9 @@
 <?php
-interface ListenerDescriptor {
-	public function getDescription();
+interface ListenerInfo {
+	public function getListenerInfo();
 }
 
-class RecordListener implements ListenerDescriptor {
+class RecordListener implements ListenerInfo {
 	
 	private $cfg;
 	
@@ -19,21 +19,23 @@ class RecordListener implements ListenerDescriptor {
 		}
 	}
 
-	public function getDescription() {
+	public function getListenerInfo() {
 		return $this->cfg;
 	}
 	
 	public function handleEvent($e) {
-		echo '<pre>';
 		print_r($e);
 		$target = array_key_exists('target', $e['params']) ? $e['params']['target'] : null;
 		$find = array_key_exists('find', $e['params']) ? $e['params']['find'] : null;
 		$param = array_key_exists('param', $e['params']) ? $e['params']['param'] : null;
-		$event = $e['event'];
-		$event[0] = strtoupper($event);
-		$method = 'on'.$event;
 		
-		echo $target . ' - ' . $find;
+		if (array_key_exists('method', $e['params'])) {
+			$method = $e['params']['method'];
+		} else {
+			$event = $e['event'];
+			$event[0] = strtoupper($event);
+			$method = 'on'.$event;
+		}
 		
 		if ($target && $find) {
 			$class = $target.'Query';
@@ -41,10 +43,7 @@ class RecordListener implements ListenerDescriptor {
 			
 			if (method_exists($o, $method)) {
 				$o->$method($e);
-				break;
-			}
-			
-			if (method_exists($o, 'handleEvent')) {
+			} else if (method_exists($o, 'handleEvent')) {
 				$o->handleEvent($e);
 			}
 		}

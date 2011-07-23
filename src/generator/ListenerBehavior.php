@@ -57,12 +57,18 @@ class ListenerBehavior extends Behavior {
 		$target->getDomain()->setSqlType(PropelTypes::VARCHAR);
 		$target->setSize(100);
 		
+		$ref = new Column('ref_id');
+		$ref->setType(PropelTypes::VARCHAR);
+		$ref->getDomain()->setSqlType(PropelTypes::VARCHAR);
+		$ref->setSize(100);
+		
 		$table->addColumn($id);
 		$table->addColumn($on);
 		$table->addColumn($callback);
 		$table->addColumn($params);
 		$table->addColumn($event);
 		$table->addColumn($target);
+		$table->addColumn($ref);
 	}
 	
 	public function modifyDatabase() {
@@ -80,11 +86,7 @@ class ListenerBehavior extends Behavior {
 		$db = $this->getDatabase() == null ? $this->getTable()->getDatabase() : $this->getDatabase();
 		$table = $db->getTable($this->getParameter('table'));
 		
-		$script = '';
-		$script .= $this->renderTemplate('ListenerInfo');
-		$script .= $this->renderTemplate('AddListener');
-		$script .= $this->renderTemplate('RemoveListener');
-		$script .= $this->renderTemplate('NotifyListener', array(
+		$script = $this->renderTemplate('ObjectListener', array(
 			'className' => $this->getTable()->getPhpName(),
 		));
 		return $script;
@@ -103,7 +105,8 @@ class ListenerBehavior extends Behavior {
 	}
 	
 	public function postInsert() {
-		return '$this->notifyListener(\'postInsert\');';
+		return '$this->notifyListener(\'postInsert\');
+$this->saveEnqueuedListeners();';
 	}
 	
 	public function preSave() {
