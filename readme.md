@@ -13,14 +13,14 @@ at the google calender accordingly.
 ## Installation
 
 ### Generator
-At first you need the [propel-listener-behavior/src/](src/generator) folder from github.  In your `build.properties` you need
+At first you need the [src/](propel-listener-behavior/src/generator) folder from github.  In your `build.properties` you need
 to add `propel.behavior.listener.class` and point it to the `src/generator/ListenerBehavior`
 file, using the dot-notation.
 
 ### Runtime
 The Propel Listener Behavior comes with it's own runtime to make it work correctly and with
 all its features.
-Include the [propel-listener-behavior/src/runtime/ListenerBehavior.php](src/runtime/ListenerBehavior.php) file in your
+Include the [src/runtime/ListenerBehavior.php](propel-listener-behavior/src/runtime/ListenerBehavior.php) file in your
 source code.
 
 ## Usage
