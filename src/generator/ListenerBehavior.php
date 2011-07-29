@@ -1,7 +1,10 @@
 <?php
+$className = null;
+
 class ListenerBehavior extends Behavior {
 	protected $parameters = array(
 		'table' => 'listener',
+		'phpName' => null,
 	);
 	
 	private function createListenerTable() {
@@ -21,6 +24,12 @@ class ListenerBehavior extends Behavior {
 
 		$table = new ListenerTable($this->getParameter('table'));
 		$table->addBehavior(new ListenerCollectionBehavior());
+		
+		
+		if (!is_null($this->getParameter('phpName'))) {
+			$table->setPhpName($this->getParameter('phpName'));
+		}
+		ListenerTable::$phpName = $table->getPhpName();
 		
 		$db->addTable($table);
 		
@@ -83,11 +92,13 @@ class ListenerBehavior extends Behavior {
 	}
 	
 	public function objectMethods() {
+		global $className;
 		$db = $this->getDatabase() == null ? $this->getTable()->getDatabase() : $this->getDatabase();
 		$table = $db->getTable($this->getParameter('table'));
-		
+
 		$script = $this->renderTemplate('ObjectListener', array(
 			'className' => $this->getTable()->getPhpName(),
+			'listenerName' => ListenerTable::$phpName,
 		));
 		return $script;
 	}
@@ -128,10 +139,16 @@ $this->saveEnqueuedListeners();';
 
 class ListenerCollectionBehavior extends Behavior {
 	public function objectMethods() {
-		$script = $this->renderTemplate('ListenerCollection');
+		global $className;
+
+		$script = $this->renderTemplate('ListenerCollection', array(
+			'listenerName' => ListenerTable::$phpName
+		));
 		return $script;
 	}
 }
 
-class ListenerTable extends Table {}
+class ListenerTable extends Table {
+	public static $phpName;
+}
 ?>

@@ -17,7 +17,7 @@ head();
 		</thead>
 		<tbody>
 			<?php
-			foreach (Listener::getListeners() as $t) {
+			foreach (Listener::getGlobalListeners() as $t) {
 				foreach ($t as $e) {
 					foreach ($e as $l) {
 						printf('<tr>

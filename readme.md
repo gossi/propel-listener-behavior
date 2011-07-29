@@ -48,16 +48,34 @@ Table:
 	</database>
 	
 However, this will create a new table (and thus a new object) in your model to store your 
-listeners. By default this table is `listener`. You can change this by passing the `table`
-parameter to the behavior, to prevent interfering usage with your model, like this:
+listeners. By default this table is `listener`. You can change this using parameters.
 
-	<behavior name="listener">
-		<param name="table" value="my_listener_table"/>
-	</behavior>
-	
 *Note: Obviously this behavior can be added to tables, there is not much sense in it. This 
 behavior is best placed as a database behavior.*
+
+#### Parameters
+Parameters to modify the behavior.
+
+##### Table Parameter
+With the `table` you can name the listener table in your schema. By default this is 
+`listener`. By passing the `table` parameter to the behavior, to prevent interfering usage 
+with your model, like this:
+
+	<behavior name="listener">
+		<parameter name="table" value="my_listener_table"/>
+	</behavior>
 	
+##### phpName Parameter
+If you don't want the generated propel object named after your table parameter you can change
+modify this with the `phpName` parameter:
+
+	<behavior name="listener">
+		<parameter name="table" value="my_listener_table"/>
+		<parameter name="table" value="Listener"/>
+	</behavior>
+	
+This will create a table named `my_listener_table` and a propel object `Listener`.
+
 ### Listener Events
 
 You can add listeners very differently, according to your needs, offering more and more 

@@ -17,7 +17,7 @@ private $listenerQueue = null;
 */
 private static function saveListener($listener, $refId = null)
 {
-	$listener = Listener::getListenerInfo($listener, get_called_class(), $refId);
+	$listener = <?php echo $listenerName; ?>::getListenerInfo($listener, get_called_class(), $refId);
 
 	// prepare for saving
 	$todb = array();
@@ -26,9 +26,9 @@ private static function saveListener($listener, $refId = null)
 	}
 
 	// save listener
-	$l = ListenerQuery::create()->findOneById($listener['id']);
+	$l = <?php echo $listenerName; ?>Query::create()->findOneById($listener['id']);
 	if (is_null($l)) {
-		$l = new Listener();
+		$l = new <?php echo $listenerName; ?>();
 		$l->fromArray($todb);
 		if (array_key_exists('Params', $todb)) {
 			$l->setParams($todb['Params']);
@@ -46,7 +46,7 @@ private static function saveListener($listener, $refId = null)
 */
 public static function addGlobalListener($listener)
 {
-	Listener::addListenerToRuntime(self::saveListener($listener));
+	<?php echo $listenerName; ?>::addListenerToRuntime(self::saveListener($listener));
 }
 
 /**
@@ -88,10 +88,10 @@ public static function removeGlobalListener($listener)
 {
 	$listener = $this->getListenerInfo($listener, get_called_class());
 	
-	$l = ListenerQuery::create()->findOneById($listener['id']);
+	$l = <?php echo $listenerName; ?>Query::create()->findOneById($listener['id']);
 	
 	if ($l) {
-		Listener::removeListenerFromRuntime($l);
+		<?php echo $listenerName; ?>::removeListenerFromRuntime($l);
 		$l->delete();
 	}
 }
@@ -104,7 +104,7 @@ public static function removeGlobalListener($listener)
 public function removeListener($listener) {
 	$listener = $this->getListenerInfo($listener, get_class($this));
 	
-	$l = ListenerQuery::create()->findOneById($listener['id']);
+	$l = <?php echo $listenerName; ?>Query::create()->findOneById($listener['id']);
 	
 	if ($l) {
 		$key = array_search($l, $this->getListeners());
@@ -122,7 +122,7 @@ public function removeListener($listener) {
 */
 private function notifyListener($event) {
 	$target = '<?php echo $className; ?>';
-	$allListeners = Listener::getListeners($target);
+	$allListeners = <?php echo $listenerName; ?>::getGlobalListeners($target);
 	$listeners = array();
 
 	// grab static listeners that will receive notification based on the occured event	
@@ -131,8 +131,8 @@ private function notifyListener($event) {
 	}
 
 	// grab static listeners that will receive notifications on all events
-	if (isset($allListeners[Listener::ALL])) {
-		$listeners = array_merge($listeners, $allListeners[Listener::ALL]);
+	if (isset($allListeners[<?php echo $listenerName; ?>::ALL])) {
+		$listeners = array_merge($listeners, $allListeners[<?php echo $listenerName; ?>::ALL]);
 	}
 	
 	// grab dynamic listeners
@@ -170,8 +170,8 @@ private function notifyListener($event) {
 */
 private function getListeners() {
 	if (is_null($this->listeners)) {
-		$listeners = ListenerQuery::create()
-			->filterByTarget('<?php echo $className; ?>')
+		$listeners = <?php echo $listenerName; ?>Query::create()
+			->filterByTarget('<?php echo $listenerName; ?>')
 			->where('ref_id IS NOT NULL')
 			->find();
 			

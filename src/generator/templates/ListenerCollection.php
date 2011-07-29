@@ -1,4 +1,4 @@
-private static $listeners;
+private static $globalListeners;
 const ALL = 'all';
 
 /**
@@ -31,7 +31,7 @@ public static function getListenerInfo($listener, $target, $refId = null)
 		'on' => null,
 		'callback' => null,
 		'params' => array(),
-		'event' => Listener::ALL,
+		'event' => self::ALL,
 		'target' => $target,
 		'ref_id' => $refId,
 	);
@@ -53,10 +53,14 @@ public static function getListenerInfo($listener, $target, $refId = null)
 /**
 * Returns all listeners stored in the database
 */
-public static function getListeners($target = null)
+public static function getGlobalListeners($target = null)
 {
-	if (is_null(self::$listeners)) {
-		$listeners = ListenerQuery::create()->where('ref_id IS NULL')->find();
+	if (is_null(self::$globalListeners)) {
+		self::$globalListeners = array();
+	}
+	
+	if (is_null(self::$globalListeners)) {
+		$listeners = <?php echo $listenerName; ?>Query::create()->where('ref_id IS NULL')->find();
 		
 		foreach ($listeners as $l) {
 			self::addListenerToRuntime($l);
@@ -64,36 +68,36 @@ public static function getListeners($target = null)
 	}
 	
 	if (!is_null($target)) {
-		if (!array_key_exists($target, self::$listeners)) {
-			self::$listeners[$target] = array();
+		if (!array_key_exists($target, self::$globalListeners)) {
+			self::$globalListeners[$target] = array();
 		}
-		return self::$listeners[$target];
+		return self::$globalListeners[$target];
 	}
 	
-	return self::$listeners;
+	return self::$globalListeners;
 }
 
 /**
 * Adds a listener to the static listener runtime collection
 *
 * @private
-* @param Listener $l
+* @param <?php echo $listenerName; ?> $l
 */
-public static function addListenerToRuntime(Listener $l) {
-	if (is_null(self::$listeners)) {
-		self::$listeners = array();
+public static function addListenerToRuntime(<?php echo $listenerName; ?> $l) {
+	if (is_null(self::$globalListeners)) {
+		self::$globalListeners = array();
 	}
 
-	if (!array_key_exists($l->getTarget(), self::$listeners)) {
-		self::$listeners[$l->getTarget()] = array();
+	if (!array_key_exists($l->getTarget(), self::$globalListeners)) {
+		self::$globalListeners[$l->getTarget()] = array();
 	}
 	
-	if (!array_key_exists($l->getEvent(), self::$listeners[$l->getTarget()])) {
-		self::$listeners[$l->getTarget()][$l->getEvent()] = array();
+	if (!array_key_exists($l->getEvent(), self::$globalListeners[$l->getTarget()])) {
+		self::$globalListeners[$l->getTarget()][$l->getEvent()] = array();
 	}
 
-	if (!in_array($l, self::$listeners[$l->getTarget()][$l->getEvent()])) { 	
-		self::$listeners[$l->getTarget()][$l->getEvent()][] = $l;
+	if (!in_array($l, self::$globalListeners[$l->getTarget()][$l->getEvent()])) { 	
+		self::$globalListeners[$l->getTarget()][$l->getEvent()][] = $l;
 	}
 }
 
@@ -101,14 +105,14 @@ public static function addListenerToRuntime(Listener $l) {
 * Removes a listener from the static listener collection
 *
 * @private
-* @param Listener $l
+* @param <?php echo $listenerName; ?> $l
 */
-public static function removeListenerFromRuntime(Listener $l) {
+public static function removeListenerFromRuntime(<?php echo $listenerName; ?> $l) {
 	try {
-		self::getListeners();
-		$key = array_search($l, self::$listeners[$l->getTarget()][$l->getEvent()]);
+		self::getGlobalListeners();
+		$key = array_search($l, self::$globalListeners[$l->getTarget()][$l->getEvent()]);
 		if ($key) {
-			unset(self::$listeners[$l->getTarget()][$l->getEvent()][$key]);
+			unset(self::$globalListeners[$l->getTarget()][$l->getEvent()][$key]);
 		}
 	} catch (Exception $e) {}
 }
@@ -135,7 +139,7 @@ public function getParams() {
  * Set the value of [params] column.
  * 
  * @param      array $v new value
- * @return     Listener The current object (for fluent API support)
+ * @return     <?php echo $listenerName; ?> The current object (for fluent API support)
  */
 public function setParams($v)
 {
@@ -149,13 +153,17 @@ public function setParams($v)
 * Adds a listener to the static collection, to keep the collection in sync during runtime.
 */
 public function postInsert(PropelPDO $con = null) {
-	self::addListenerToRuntime($this);
+	if ($this->target == '') {
+		self::addListenerToRuntime($this);
+	}
 }
 
 /**
 * Removes a listener from the static collection, to keep the collection in sync during runtime.
 */
 public function preDelete(PropelPDO $con = null) {
-	self::removeListenerFromRuntime($this);
+	if ($this->target == '') {
+		self::removeListenerFromRuntime($this);
+	}
 	return true;
 }
