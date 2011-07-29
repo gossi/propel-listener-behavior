@@ -57,9 +57,6 @@ public static function getGlobalListeners($target = null)
 {
 	if (is_null(self::$globalListeners)) {
 		self::$globalListeners = array();
-	}
-	
-	if (is_null(self::$globalListeners)) {
 		$listeners = <?php echo $listenerName; ?>Query::create()->where('ref_id IS NULL')->find();
 		
 		foreach ($listeners as $l) {
