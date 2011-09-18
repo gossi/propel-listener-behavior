@@ -71,7 +71,7 @@ modify this with the `phpName` parameter:
 
 	<behavior name="listener">
 		<parameter name="table" value="my_listener_table"/>
-		<parameter name="table" value="Listener"/>
+		<parameter name="phpName" value="Listener"/>
 	</behavior>
 	
 This will create a table named `my_listener_table` and a propel object `Listener`.
@@ -142,7 +142,7 @@ notified.
 
 	function myListenerFunction($e) {
 		// ... do something here
-		echo $e['params']['my_super_important_id'];
+		echo $e['params']['my_super_important_id']; // 42
 	}
 
 	$t = new Table();
@@ -302,6 +302,10 @@ The event which occured.
 
 Propel-object on which the event occured.
 
+#### (array) params (optional)
+
+User defined parameters.
+
 ### RecordListener
 
 The `RecordListener` takes the parameters as an array in the constructor. They are:
@@ -324,7 +328,7 @@ The method that will be invoked on the target object. To find the right method i
 object, the listener-behavior tries the following steps:
 
 1. method is passed as param
-2. on`Event` means if `postUpdate` is invoked, the method `onPostUpdate` will be tried to 
+2. `onEvent`, means: if `postUpdate` is invoked, the method `onPostUpdate` will be tried to 
 call.
 3. If none of the above methods is found in the target object, `handleEvent` is called.
 
