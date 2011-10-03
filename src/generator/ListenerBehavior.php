@@ -1,13 +1,18 @@
 <?php
 $className = null;
 
-class ListenerBehavior extends Behavior {
+require_once 'ListenerCollectionBehavior.php';
+require_once 'ListenerTable.php';
+
+class ListenerBehavior extends Behavior 
+{
 	protected $parameters = array(
 		'table' => 'listener',
 		'phpName' => null,
 	);
 	
-	private function createListenerTable() {
+	private function createListenerTable() 
+	{
 		$db = $this->getDatabase() == null ? $this->getTable()->getDatabase() : $this->getDatabase();
 		$table = $db->getTable($this->getParameter('table'));
 
@@ -80,18 +85,21 @@ class ListenerBehavior extends Behavior {
 		$table->addColumn($ref);
 	}
 	
-	public function modifyDatabase() {
+	public function modifyDatabase() 
+	{
 		$this->createListenerTable();
 
 		// call parent to add this behavior to all tables in the database
 		parent::modifyDatabase();
 	}
 	
-	public function modifyTable() {
+	public function modifyTable() 
+	{
 		$this->createListenerTable();
 	}
 	
-	public function objectMethods() {
+	public function objectMethods() 
+	{
 		global $className;
 		$db = $this->getDatabase() == null ? $this->getTable()->getDatabase() : $this->getDatabase();
 		$table = $db->getTable($this->getParameter('table'));
@@ -103,52 +111,45 @@ class ListenerBehavior extends Behavior {
 		return $script;
 	}
 	
-	public function preDelete() {
+	public function preDelete() 
+	{
 		return '$this->notifyListener(\'preDelete\');';
 	}
 	
-	public function postDelete() {
+	public function postDelete() 
+	{
 		return '$this->notifyListener(\'postDelete\');';
 	}
 	
-	public function preInsert() {
+	public function preInsert() 
+	{
 		return '$this->notifyListener(\'preInsert\');';
 	}
 	
-	public function postInsert() {
+	public function postInsert() 
+	{
 		return '$this->notifyListener(\'postInsert\');
 $this->saveEnqueuedListeners();';
 	}
 	
-	public function preSave() {
+	public function preSave() 
+	{
 		return '$this->notifyListener(\'preSave\');';
 	}
 	
-	public function postSave() {
+	public function postSave() 
+	{
 		return '$this->notifyListener(\'postSave\');';
 	}
 	
-	public function preUpdate() {
+	public function preUpdate() 
+	{
 		return '$this->notifyListener(\'preUpdate\');';
 	}
 	
-	public function postUpdate() {
+	public function postUpdate() 
+	{
 		return '$this->notifyListener(\'postUpdate\');';
 	}
-}
-
-class ListenerCollectionBehavior extends Behavior {
-	public function objectMethods() {
-		global $className;
-
-		$script = $this->renderTemplate('ListenerCollection', array(
-			'listenerName' => ListenerTable::$phpName
-		));
-		return $script;
-	}
-}
-
-class ListenerTable extends Table {
-	public static $phpName;
 }
 ?>

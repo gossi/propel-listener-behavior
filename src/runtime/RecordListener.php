@@ -1,13 +1,13 @@
 <?php
-interface ListenerInfo {
-	public function getListenerInfo();
-}
 
-class RecordListener implements ListenerInfo {
-	
+require_once 'ListenerConfigInterface.php';
+
+class RecordListener implements ListenerConfigInterface 
+{
 	private $cfg;
 	
-	public function __construct($cfg = array()) {
+	public function __construct($cfg = array()) 
+	{
 		$this->cfg = array(
 			'on' => 'RecordListener',
 			'params' => $cfg,
@@ -19,11 +19,13 @@ class RecordListener implements ListenerInfo {
 		}
 	}
 
-	public function getListenerInfo() {
+	public function getListenerConfig() 
+	{
 		return $this->cfg;
 	}
 	
-	public function handleEvent($e) {
+	public function handleEvent($e) 
+	{
 		print_r($e);
 		$target = array_key_exists('target', $e['params']) ? $e['params']['target'] : null;
 		$find = array_key_exists('find', $e['params']) ? $e['params']['find'] : null;
