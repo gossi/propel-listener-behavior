@@ -1,4 +1,4 @@
-propel.project = propel
+propel.project = listener-behavior
 
 propel.database = mysql
 propel.database.url = mysql://<user>@<host>/<database>
@@ -9,9 +9,9 @@ propel.schema.autoPrefix = false
 
 propel.mysql.tableType = InnoDB
 
-propel.output.dir = ${propel.project.dir}/../build
-propel.php.dir = ${propel.output.dir}
-propel.phpconf.dir = ${propel.output.dir}
+#propel.output.dir = ${propel.project.dir}/../build
+#propel.php.dir = ${propel.output.dir}
+#propel.phpconf.dir = ${propel.output.dir}
 
-# point to the src/generator/ListenerBehavior using dots 
+# point to the generator/ListenerBehavior using the dot notation
 propel.behavior.listener.class = 

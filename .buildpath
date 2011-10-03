@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
-	<buildpathentry kind="src" path="src"/>
+	<buildpathentry kind="src" path="test/fixtures/listener-behavior/build/classes"/>
+	<buildpathentry kind="src" path="runtime"/>
+	<buildpathentry kind="src" path="lib/propel-1.6.2/runtime/lib"/>
+	<buildpathentry external="true" kind="lib" path="/usr/local/Cellar/php/5.3.6/lib/php/PHPUnit"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-	<buildpathentry kind="src" path="lib/propel-1.6.1/generator/lib"/>
-	<buildpathentry kind="src" path="lib/propel-1.6.1/runtime/lib"/>
-	<buildpathentry kind="src" path="build/propel"/>
+	<buildpathentry kind="src" path="generator"/>
+	<buildpathentry kind="src" path="lib/propel-1.6.2/generator/lib"/>
+	<buildpathentry kind="src" path="test/listener-behavior"/>
 </buildpath>

@@ -1,5 +1,5 @@
-#Fri Jul 15 22:15:26 CEST 2011
+#Mon Oct 03 17:45:45 CEST 2011
 eclipse.preferences.version=1
-include_path=0;/propel-listener-behavior/src\u00050;/propel-listener-behavior/build/propel\u00050;/propel-listener-behavior/lib/propel-1.6.1/generator/lib\u00050;/propel-listener-behavior/lib/propel-1.6.1/runtime/lib
+include_path=0;/propel-listener-behavior/generator\u00050;/propel-listener-behavior/test/fixtures/listener-behavior/build/classes\u00050;/propel-listener-behavior/lib/propel-1.6.2/generator/lib\u00050;/propel-listener-behavior/runtime\u00050;/propel-listener-behavior/lib/propel-1.6.2/runtime/lib\u00050;/propel-listener-behavior/test/listener-behavior\u00051;/usr/local/Cellar/php/5.3.6/lib/php/PHPUnit
 phpVersion=php5.3
 use_asp_tags_as_php=false
