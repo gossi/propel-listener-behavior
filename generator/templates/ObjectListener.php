@@ -148,12 +148,22 @@ private function notifyListener($event) {
 
 			if ($l->getOn()) {
 				$cls = $l->getOn();
-				$method = $l->getCallback();
-				if ($method == '') {
-					$method = 'handleEvent';
-				}
 				$c = new $cls();
-				$c->$method($e);
+				
+				$method = $l->getCallback();
+				if (!method_exists($c, $method)) {
+					$method = sprintf('on%s%s', 
+						strtoupper(substr($e['event'], 0, 1)),
+						substr($e['event'], 1));
+					
+					if (!method_exists($c, $method)) {
+						$method = 'handleEvent';
+					}
+				}
+				
+				if (method_exists($c, $method)) {
+					$c->$method($e);
+				}
 			} else {
 				$cb = $l->getCallback();
 				$cb($e);

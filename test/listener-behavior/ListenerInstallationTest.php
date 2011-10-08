@@ -160,8 +160,8 @@ class ListenerInstallationTest extends ListenerBehaviorTestBase
 		$this->assertEquals($t->getId(), $l->getRefId());
 
 		// remove
-// 		$t->removeListener('listener');
-// 		$this->assertEquals(0, ListenerQuery::create()->count());
+		$t->removeListener('listener');
+		$this->assertEquals(0, ListenerQuery::create()->count());
 	}
 }
 ?>
